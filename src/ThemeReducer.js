@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -11,29 +11,29 @@ const reducer = (state, action) => {
   }
 };
 
-const CounterReducer = () => {
-  //get LocalStorage
+const ThemeReducer = () => {
+  //get LocalStorage, if there is data, set it to the initialState,
+  //if there is no Data set initialState to 0
 
   // Reducer
-  // const initialState =
-  //   ? { count: localStorage.getItem('state') }
-  //   : { count: 0 };
-
-  const [state, dispatch] = useReducer(reducer, {
+  const initialState = {
     count: localStorage.getItem('state')
       ? JSON.parse(localStorage.getItem('state'))
       : 0,
-  });
+  };
+
+  const [state, dispatch] = useReducer(reducer, initialState);
+  // useEffekt runs on every state update  => [state]
+  useEffect(() => {
+    localStorage.setItem('state', JSON.stringify(state.count));
+  }, [state]);
 
   const minus = () => {
     dispatch({ type: 'minus' });
-
-    localStorage.setItem('state', JSON.stringify(state.count));
   };
 
   const plus = () => {
     dispatch({ type: 'plus' });
-    localStorage.setItem('state', JSON.stringify(state.count));
   };
 
   return (
@@ -46,4 +46,4 @@ const CounterReducer = () => {
   );
 };
 
-export default CounterReducer;
+export default ThemeReducer;
