@@ -2,23 +2,25 @@ import React, { useState, useEffect } from 'react';
 import './theme.css';
 
 const ThemeState = () => {
-  const [theme, setTheme] = useState(
-    localStorage.getItem('theme') ? localStorage.getItem('theme') : 'dark'
+  const [themeState, setTheme] = useState(
+    localStorage.getItem('themeState')
+      ? localStorage.getItem('themeState')
+      : 'dark'
   );
 
   const ThemeToggle = () => {
-    setTheme(theme === 'dark' ? 'light' : 'dark');
+    setTheme(themeState === 'dark' ? 'light' : 'dark');
   };
   useEffect(() => {
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    localStorage.setItem('themeState', themeState);
+  }, [themeState]);
 
   return (
-    <div className={theme}>
+    <div className={themeState}>
       <h1>Theme Toggle Test</h1>
       <button onClick={ThemeToggle}>Theme Toggle</button>
 
-      {theme}
+      {themeState}
     </div>
   );
 };

@@ -2,12 +2,11 @@ import React, { useReducer, useEffect } from 'react';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'plus':
-      return { count: state.count + 1 };
-    case 'minus':
-      return { count: state.count - 1 };
+    case 'THEMECHANGE':
+      return { theme: state.theme === 'dark' ? 'light' : 'dark' };
+
     default:
-      return state;
+      return state.theme;
   }
 };
 
@@ -17,31 +16,27 @@ const ThemeReducer = () => {
 
   // Reducer
   const initialState = {
-    count: localStorage.getItem('state')
-      ? JSON.parse(localStorage.getItem('state'))
-      : 0,
+    theme: localStorage.getItem('theme')
+      ? localStorage.getItem('theme')
+      : 'dark',
   };
 
   const [state, dispatch] = useReducer(reducer, initialState);
   // useEffekt runs on every state update  => [state]
   useEffect(() => {
-    localStorage.setItem('state', JSON.stringify(state.count));
-  }, [state]);
+    localStorage.setItem('theme', /* JSON.stringify */ state.theme);
+  }, [state.theme]);
 
-  const minus = () => {
-    dispatch({ type: 'minus' });
-  };
-
-  const plus = () => {
-    dispatch({ type: 'plus' });
+  const themeChange = () => {
+    dispatch({ type: 'THEMECHANGE' });
   };
 
   return (
-    <div>
-      <h1>Counter Reducer Test</h1>
-      <button onClick={minus}>-</button>
-      {state.count}
-      <button onClick={plus}>+</button>
+    <div className={state.theme}>
+      <h1>Theme Reducer Test</h1>
+
+      {state.theme}
+      <button onClick={themeChange}>ToggleTheme</button>
     </div>
   );
 };
